@@ -15,6 +15,7 @@ void Goodbye_init(Goodbye *this, int test, const char *name)
 
 void Goodbye_proc(Goodbye *this)
 {
+    puts("Goodbye_proc invoked!");
 }
 
 void Goodbye_destroy(Goodbye *this)

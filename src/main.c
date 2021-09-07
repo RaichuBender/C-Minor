@@ -14,7 +14,12 @@ int main(int argc, char const *argv[])
 	msg[1] = NEW(Goodbye, 42, "Lucas");
 
     for (int i = 0;  i < 2;  ++i)
+    {
         msg[i]->print(msg[i]);
+        msg[i]->PARENT.PROC(msg[i]);
+        msg[i]->Message_proc(msg[i]);
+        puts("");
+    }
 
 	return 0;
 }

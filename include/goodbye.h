@@ -3,12 +3,10 @@
 
 typedef struct _Goodbye Goodbye;
 
-METHODS
-(
-    void Goodbye_init(Goodbye *this, int test, const char *name);
-    void Goodbye_proc(Goodbye *this);
-    void Goodbye_destroy(Goodbye *this);
-)
+void Goodbye_init(Goodbye *this, int test, const char *name);
+void Goodbye_proc(Goodbye *this);
+void Goodbye_destroy(Goodbye *this);
+
 void print_gb(Goodbye *this);
 
 CLASS
@@ -17,6 +15,7 @@ CLASS
 	OVERLOAD(Message)
 
 	METHOD(print_gb)
+	METHOD(Goodbye_proc)
 
     MEMBERS
     (

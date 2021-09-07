@@ -15,6 +15,7 @@ void Hello_init(Hello *this, int test, const char *name)
 
 void Hello_proc(Hello *this)
 {
+    puts("Hello_proc invoked!");
 }
 
 void Hello_destroy(Hello *this)

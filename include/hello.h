@@ -6,12 +6,11 @@
 
 typedef struct _Hello Hello;
 
-METHODS
-(
-    void Hello_init(Hello *this, int test, const char *name);
-    void Hello_proc(Hello *this);
-    void Hello_destroy(Hello *this);
-)
+
+void Hello_init(Hello *this, int test, const char *name);
+void Hello_proc(Hello *this);
+void Hello_destroy(Hello *this);
+
 void print_hl(Hello *this);
 
 CLASS
@@ -20,6 +19,7 @@ CLASS
 	OVERLOAD(Message)
 
 	METHOD(print_hl)
+	METHOD(Hello_proc)
 
     MEMBERS
     (
