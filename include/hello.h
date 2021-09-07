@@ -1,32 +1,31 @@
 // #ifndef __HELLO_H__
 // #define __HELLO_H__
 
+// #include "message.h"
 #include "class.h"
 
 typedef struct _Hello Hello;
-void print_hello(Hello *this);
+
+METHODS
+(
+    void Hello_init(Hello *this, int test, const char *name);
+    void Hello_proc(Hello *this);
+    void Hello_destroy(Hello *this);
+)
+void print_hl(Hello *this);
 
 CLASS
 (   Hello,
 
-	EXTEND(BASE)
+	OVERLOAD(Message)
 
-	METHOD(print_hello)
+	METHOD(print_hl)
 
     MEMBERS
     (
         int test;
-        const char hello[11];
+        const char name[11];
     )
 )
-
-METHODS
-(
-    void Hello_init(Hello *this, int test, const char *hello);
-    void Hello_proc(Hello *this);
-    void Hello_destroy(Hello *this);
-)
-
-extern Hello *current_Hello;
 
 // #endif //__HELLO_H__

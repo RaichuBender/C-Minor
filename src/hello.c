@@ -7,12 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-void Hello_init(Hello *this, int test, const char *hello)
+void Hello_init(Hello *this, int test, const char *name)
 {
-    SUPER();
-
     this->test = test;
-    memcpy(&this->hello, hello, 11);
+    memcpy(&this->name, name, 11);
 }
 
 void Hello_proc(Hello *this)
@@ -23,7 +21,7 @@ void Hello_destroy(Hello *this)
 {
 }
 
-void print_hello(Hello *this)
+void print_hl(Hello *this)
 {
-    printf("%s %d\n", this->hello, this->test);
+    printf("Hello, %s! %d\n", this->name, this->test);
 }

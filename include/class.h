@@ -8,9 +8,12 @@
 typedef struct BASE BASE;
 typedef void (*BASE_CALL)(BASE *);
 
-#define CONSTR(name)           \
-    {                          \
-        NULL, NULL, NULL, NULL \
+#define CONSTR(name)                     \
+    {                                    \
+        NULL,                            \
+            (BASE_CALL)(&name##_init),   \
+            (BASE_CALL)(&name##_proc),   \
+            (BASE_CALL)(&name##_destroy) \
     }
 
 #define NEW(lbl, ...)                          \
@@ -33,6 +36,10 @@ struct BASE
     BASE_CALL DESTROY;
 };
 
+extern BASE cBASE;
+
+#define OVERLOAD(bs) \
+    BASE PARENT;
 #define EXTEND(bs) \
     bs PARENT;
 
@@ -56,7 +63,12 @@ struct BASE
 
 #else //IMPLEMENT
 
-#define EXTEND(bs)
+#define OVERLOAD(bs)                      \
+    if (((BASE *)&c##bs)->INIT != NULL) \
+        memcpy(p, &c##bs, sizeof(BASE));
+#define EXTEND(bs)                      \
+    if (((BASE *)&c##bs)->INIT != NULL) \
+        memcpy(p, &c##bs, sizeof(BASE));
 
 #define METHOD(name) \
     p->name = &name;
@@ -70,9 +82,12 @@ struct BASE
         __VA_ARGS__           \
     }
 
-#define SUPER()                    \
-    if (this->PARENT.INIT != NULL) \
-        this->PARENT.INIT(this);
+// #define SUPER()                    \
+//     if (this->PARENT.INIT != NULL) \
+//         this->PARENT.INIT(this);
+#define SUPER(this)                       \
+    if (((BASE *)this)->INIT != NULL) \
+        ((BASE *)this)->INIT((BASE *)this);
 
 #endif //IMPLEMENT
 
