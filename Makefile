@@ -3,7 +3,7 @@ OBJECTS	:= obj/main.o obj/hello.o obj/goodbye.o obj/message.o
 
 INCLUDE	:= include
 CFLAGS	:= -O0 -g
-#CFLAGS	:= -O2 -s -static
+# CFLAGS	:= -O2 -s -static
 
 default:	clean
 	$(MAKE) $(EXE)
