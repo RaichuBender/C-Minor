@@ -7,24 +7,27 @@
 
 typedef struct BASE BASE;
 typedef void (*BASE_CALL)(BASE *);
+typedef void BASE_PARENT;
 
 #define CONSTR(name)                     \
     {                                    \
         NULL,                            \
-            (BASE_CALL)(&name##_init),   \
-            (BASE_CALL)(&name##_proc),   \
-            (BASE_CALL)(&name##_destroy) \
+            (BASE_CALL)(&name##_INIT),   \
+            (BASE_CALL)(&name##_PROC),   \
+            (BASE_CALL)(&name##_DESTROY) \
     }
 
-#define NEW(lbl, ...)                          \
-    (                                          \
-        {                                      \
-            lbl *new = malloc(sizeof(lbl));    \
-            memcpy(new, &c##lbl, sizeof(lbl)); \
-            lbl##_CONSTR(new);                 \
-            lbl##_init(new, __VA_ARGS__);      \
-            new;                               \
+#define NEW(lbl, ...)                                                 \
+    (                                                                 \
+        {                                                             \
+            lbl *new = malloc(sizeof(lbl));                           \
+            memcpy(new, &lbl##_PROTO, sizeof(lbl)); \
+            lbl##_CONSTR(new);                                        \
+            lbl##_INIT(new, __VA_ARGS__);                             \
+            new;                                                      \
         })
+
+void ABSTRACT(void *);
 
 #ifndef IMPLEMENT
 
@@ -36,14 +39,16 @@ struct BASE
     BASE_CALL DESTROY;
 };
 
-extern BASE cBASE;
+extern BASE BASE_PROTO;
 
-#define OVERLOAD(bs) \
-    BASE PARENT;
 #define EXTEND(bs) \
     bs PARENT;
 
-#define METHOD(name) \
+#define METHOD(name, src) \
+    typeof(src) *name;
+#define OVERRIDE(name, src) \
+    typeof(src) *name;
+#define USE(name)   \
     typeof(name) *name;
 
 #define MEMBERS(...) \
@@ -51,27 +56,29 @@ extern BASE cBASE;
 #define METHODS(...) \
     __VA_ARGS__
 
-#define CLASS(lbl, ...)       \
-    typedef struct _##lbl     \
-    {                         \
-        __VA_ARGS__           \
-    } lbl;                    \
-                              \
-    static const lbl c##lbl = \
-        {CONSTR(lbl), NULL};  \
+#define CLASS(lbl, ...)                     \
+    typedef struct _##lbl                   \
+    {                                       \
+        __VA_ARGS__                         \
+    } lbl;                                  \
+                                            \
+    static const lbl lbl##_PROTO = \
+        {CONSTR(lbl), NULL};                \
     void lbl##_CONSTR(lbl *p);
 
 #else //IMPLEMENT
 
-#define OVERLOAD(bs)                      \
-    if (((BASE *)&c##bs)->INIT != NULL) \
-        memcpy(p, &c##bs, sizeof(BASE));
-#define EXTEND(bs)                      \
-    if (((BASE *)&c##bs)->INIT != NULL) \
-        memcpy(p, &c##bs, sizeof(BASE));
+#define EXTEND(bs)                             \
+    if (((BASE *)(&bs##_PROTO))->INIT != NULL) \
+        memcpy(&p->PARENT, &bs##_PROTO, sizeof(bs));
 
-#define METHOD(name) \
-    p->name = &name;
+#define METHOD(name, src) \
+    p->name = &src;
+#define OVERRIDE(name, src) \
+    p->PARENT.name = &src;  \
+    p->name = &src;
+#define USE(name)   \
+    p->name = p->PARENT.name;
 
 #define MEMBERS(...)
 #define METHODS(...)
@@ -82,12 +89,9 @@ extern BASE cBASE;
         __VA_ARGS__           \
     }
 
-// #define SUPER()                    \
-//     if (this->PARENT.INIT != NULL) \
-//         this->PARENT.INIT(this);
-#define SUPER(this)                       \
-    if (((BASE *)this)->INIT != NULL) \
-        ((BASE *)this)->INIT((BASE *)this);
+#define SUPER(lbl,this)              \
+    if (((BASE *)this)->lbl != NULL) \
+        ((BASE *)this)->lbl(this);
 
 #endif //IMPLEMENT
 

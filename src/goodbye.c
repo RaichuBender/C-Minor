@@ -7,22 +7,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-void Goodbye_init(Goodbye *this, int test, const char *name)
+void GOODBYE_INIT(GOODBYE *this, int test, const char *name)
 {
+    SUPER(INIT,this);
+
     this->test = test;
     memcpy(&this->name, name, 11);
 }
 
-void Goodbye_proc(Goodbye *this)
+void GOODBYE_PROC(GOODBYE *this)
 {
-    puts("Goodbye_proc invoked!");
+    puts("GOODBYE_PROC invoked!");
 }
 
-void Goodbye_destroy(Goodbye *this)
+void GOODBYE_DESTROY(GOODBYE *this)
 {
+    puts("GOODBYE_DESTROY invoked!");
+    free(this);
 }
 
-void print_gb(Goodbye *this)
+void print_gb(GOODBYE *this)
 {
-    printf("Goodbye, %s! %d\n", this->name, this->test);
+    printf("Goodbye, %s! Your ticked ID is: %d!\n", this->name, this->test);
 }

@@ -3,17 +3,15 @@
 #include "implement.h"
 #include "message.h"
 
-void Message_init(Message *this)
-{
-}
-void Message_proc(Message *this)
-{
-    puts("Message_proc invoked!");
-}
-void Message_destroy(Message *this)
+void MESSAGE_INIT(MESSAGE *this)
 {
 }
 
-void print(Message *this)
+void MESSAGE_PROC(MESSAGE *this)
+{
+    puts("MESSAGE_PROC invoked!");
+}
+
+void MESSAGE_DESTROY(MESSAGE *this)
 {
 }

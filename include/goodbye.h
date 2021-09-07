@@ -1,21 +1,22 @@
 // #include "message.h"
 #include "class.h"
 
-typedef struct _Goodbye Goodbye;
+typedef struct _GOODBYE GOODBYE;
 
-void Goodbye_init(Goodbye *this, int test, const char *name);
-void Goodbye_proc(Goodbye *this);
-void Goodbye_destroy(Goodbye *this);
+void GOODBYE_INIT(GOODBYE *this, int test, const char *name);
+void GOODBYE_PROC(GOODBYE *this);
+void GOODBYE_DESTROY(GOODBYE *this);
 
-void print_gb(Goodbye *this);
+void print_gb(GOODBYE *this);
 
 CLASS
-(   Goodbye,
+(   GOODBYE,
 
-	OVERLOAD(Message)
+	EXTEND(MESSAGE)
 
-	METHOD(print_gb)
-	METHOD(Goodbye_proc)
+	OVERRIDE(print, print_gb)
+	OVERRIDE(PROC, GOODBYE_PROC)
+    OVERRIDE(DESTROY, GOODBYE_DESTROY)
 
     MEMBERS
     (

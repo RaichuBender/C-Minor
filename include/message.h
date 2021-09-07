@@ -1,17 +1,17 @@
 #include "class.h"
 
-typedef struct _Message Message;
+typedef struct _MESSAGE MESSAGE;
 
-void Message_init(Message *);
-void Message_proc(Message *);
-void Message_destroy(Message *);
-
-void print(Message *this);
+void MESSAGE_INIT(MESSAGE *);
+void MESSAGE_PROC(MESSAGE *);
+void MESSAGE_DESTROY(MESSAGE *);
+void derp(void);
 
 CLASS
-(   Message,
-	EXTEND(BASE)
+(   MESSAGE,
+    EXTEND(BASE)
 
-	METHOD(print)
-	METHOD(Message_proc)
+	METHOD(print, ABSTRACT)
+	METHOD(PROC, ABSTRACT)
+	METHOD(DESTROY, ABSTRACT)
 )
